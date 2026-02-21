@@ -56,8 +56,10 @@ struct EntryFormView: View {
                         entry.isFavorite = isFavorite
                         entry.tintColor = selectedColor
                     } else {
-                        context.insert(JournalEntry(title: title, body: entryBody, isFavorite: isFavorite, tintColor: selectedColor))
+                        let newEntry = JournalEntry(title: title, body: entryBody, createdAt: .now, isFavorite: isFavorite, tintColor: selectedColor, isArchived: false)
+                        context.insert(newEntry)
                     }
+                    try? context.save()
                     dismiss()
                 }
                 .disabled(title.isEmpty)

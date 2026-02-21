@@ -16,7 +16,8 @@ struct EntryListView: View {
     @State private var showFavoritesOnly: Bool = false
 
     private var filteredEntries: [JournalEntry] {
-        var result = showFavoritesOnly ? entries.filter { $0.isFavorite } : entries
+        var result = entries.filter { !$0.isArchived }
+        if showFavoritesOnly { result = result.filter { $0.isFavorite } }
         if !searchText.isEmpty {
             result = result.filter { $0.title.localizedCaseInsensitiveContains(searchText) || $0.body.localizedCaseInsensitiveContains(searchText) }
         }
@@ -73,6 +74,16 @@ struct EntryListView: View {
         .navigationTitle("My Journal")
         .searchable(text: $searchText)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                NavigationLink(destination: SettingsView()) {
+                    Image(systemName: "gear")
+                }
+            }
+            ToolbarItem(placement: .topBarLeading) {
+                NavigationLink(destination: ArchivedEntriesView()) {
+                    Image(systemName: "archivebox")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button { showFavoritesOnly.toggle() } label: {
                     Image(systemName: showFavoritesOnly ? "star.fill" : "star")

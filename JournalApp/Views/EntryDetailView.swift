@@ -35,6 +35,12 @@ struct EntryDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                Button(entry.isArchived ? "Unarchive" : "Archive") {
+                    entry.isArchived.toggle()
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") { showingEdit = true }
             }
         }
